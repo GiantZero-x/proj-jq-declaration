@@ -1,0 +1,62 @@
+<style>
+  @font-face {
+    font-family: "SimSun";
+    src: local("simsun"), url('<?=ROOT_PATH?>public/static/fonts/simsun.ttc');
+  }
+  @font-face {
+    font-family: "SimHei";
+    src: local("simhei"), url('<?=ROOT_PATH?>public/static/fonts/simhei.ttf');
+  }
+    .tab-pane table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    .tab-pane table tr th, .tab-pane table tr td {
+        color: #000;
+        line-height: 25px;
+        height: 25px;
+    }
+    
+    .tab-pane table tr:not(.no_border) th, .tab-pane table tr:not(.no_border) td {
+        border: 1px solid #000;
+        text-align: center;
+        height: 52;
+    }
+    
+    .red_dot:before {
+        content: '*';
+        color: #f00;
+    }
+    
+    .b_b {
+        border-bottom: 1px solid #000;
+    }
+    
+    .n_b {
+        border-bottom: none !important;
+    }
+    
+    .n_r {
+        border-right: none !important;
+    }
+    
+    .n_t {
+        border-top: none !important;
+    }
+    
+    .n_l {
+        border-left: none !important;
+    }
+    
+    .text_left {
+        text-align: left;
+    }
+    .text_right {
+        text-align: right;
+    }
+
+    .text_center {
+        text-align: center;
+    }
+</style>

@@ -1,0 +1,61 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form role="form">
+            <div class="form-group col-sm-6">
+                <label>报关员姓名</label>
+                <input type="text" class="form-control" value="{$user.customs_name}" name="customs_name">
+            </div>
+            <div class="form-group col-sm-6">
+                <label>手机</label>
+                <input type="text" class="form-control" value="{$user.telephone}" name="telephone">
+            </div>
+            <div class="form-group col-sm-6">
+                <label>电子邮箱</label>
+                <input type="text" class="form-control" value="{$user.email}" name="email">
+            </div>
+            <div class="form-group col-sm-6">
+                <label>报关员卡号</label>
+                <input type="text" class="form-control" value="{$user.customs_card}" name="customs_card">
+            </div>
+        </form>
+    </div>
+    <div class="panel-footer text-right">
+        <button class="btn btn-info" data-toggle="modal" data-target="#updatePwd">修改密码</button>
+        <button type="button" class="btn btn-warning save_btn" data-loading-text="正在更新..."
+                data-url="{:url('index/home/update')}" data-type="#clearanceParam">更新资料
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="updatePwd" tabindex="-1" role="dialog" aria-labelledby="updatePwd">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改密码</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="control-label">原密码:</label>
+                        <input type="password" name="oldPwd" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">新密码:</label>
+                        <input type="password" name="newPwd" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">确认密码:</label>
+                        <input type="password" name="confirmPwd" class="form-control">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary submit_update" data-url="{:url('index/home/rest_password')}" data-outurl="{:url('index/login/loginOut')}">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="<?=__STATIC__?>/js/home.js"></script>

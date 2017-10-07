@@ -1,0 +1,111 @@
+{include file='index/style' /}
+<style>
+    #shenbaoqingdan h2, #shenbaoqingdan p {
+        color: #000;
+        font-family: SimSun;
+        font-weight: bold;
+    }
+
+    #shenbaoqingdan p {
+        font-size: 16px;
+        text-indent: 1em;
+    }
+    #shenbaoqingdan td {
+        height:26px;
+        line-height:26px;
+    }
+
+    #shenbaoqingdan p span {
+        text-indent: 0;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+    .text-center {
+        text-align: center;
+    }
+</style>
+<script src="<?=HTTP_HOST?>__STATIC__/js/jquery.min.js"></script>
+<script src="<?=HTTP_HOST?>__STATIC__/js/barcode/JsBarcode.all.min.js"></script>
+        {volist name="billHead->markets" id="market" empty="暂时没有数据" }
+
+<div class="tab-pane" id="shenbaoqingdan">
+    <h2 class="text-center"><img src="<?=HTTP_HOST?>__STATIC__/images/caigoulogo.png" alt="采购logo" style="vertical-align: sub;width: 80px;">市场采购货物清单</h2>
+    <div style="float: left; width: 50%;padding-top: 45px">
+        <p class="text-left">市场采购统一编号：(SCCG:3318961CXP17000834)</p>
+        <p class="text-left">集装箱号：{$billHead.box_no}</p>
+    </div>
+    <div style="float: right; width: 50%;">
+        <img class="barcode" style="width: 85%; height: 130px;">
+    </div>
+    <p class="text-left" style="clear: both;">
+        <span style="display: inline-block; width: 24%;">提运单号：{$billHead.bill_no}</span>
+        <span style="display: inline-block; width: 35%;">经营单位：{$billHead->deliver->name}</span>
+        <span style="display: inline-block; width: 18%;">货代确认：待确认</span>
+        <span style="display: inline-block; width: 18%;">车队确认：待确认</span>
+    </p>
+    <table>
+        <thead>
+        <tr>
+            <th width="3%">序号</th>
+            <th width="8%">货号/唛头</th>
+            <th width="12%">商品名称</th>
+            <th width="8%">规格型号</th>
+            <th width="8%">数量单位</th>
+            <th width="8%">包装数量</th>
+            <th width="8%">包装单位</th>
+            <th width="8%">货值</th>
+            <th width="8%">币值</th>
+            <th width="7%" style="padding: 0 10px;">重量(千克)</th>
+            <th width="9%">所属商户</th>
+            <th>备注</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name="market" id="cargo" empty="暂时没有数据"}
+        <tr>
+            <td>{$i}</td>
+            {neq name="$cargo.hs_code" value=""}
+                <td><!-- {$cargo.hs_code} --></td>
+                <td>{$cargo.name}</td>
+                <td><!-- {$cargo.standard} --></td>
+                <td>{$cargo.number}{$cargo.unit}</td>
+                <td>{$cargo.case_no}</td>
+                <td>{$billHead.pack_str}</td>
+                <td>{$cargo.amount}</td>
+                <td>{$billHead.currency_chs}</td>
+                <td>{$cargo.rough_weight}</td>
+                <td>市场商户</td>
+                <td></td>
+            {else}
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            {/neq}
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    <p class="text-left">
+        经营单位代码：{$billHead->deliver->customs_code}
+        <span style="display: inline-block;width: 25%;float:right">经营单位签章：</span>
+    </p>
+</div>
+{/volist}
+<script>
+  $(function () {
+    JsBarcode(".barcode", "SCCG:3318961CXP17000834", {
+      format: "CODE128B",
+      fontSize: 24
+    })
+  })
+</script>

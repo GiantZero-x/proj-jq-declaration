@@ -1,0 +1,172 @@
+{include file='index/style' /}
+<style>
+  #hetong {
+    font-family: SimSun;
+  }
+
+  #hetong td {
+    height: 20px;
+    line-height: 20px;
+  }
+</style>
+<div class="tab-pane" id="hetong">
+  {volist name="$billHead->contract" id="contract" empty="暂时没有数据" }
+  <table>
+    <tbody>
+    <tr class="no_border">
+      <th colspan="6" style="text-align: center;font-size: 2em;">{$billHead.deliver.name}</th>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6"></td>
+    </tr>
+    <tr class="no_border">
+      <th colspan="6" style="text-align: center;font-size: 2em; position: relative;top: -12px;">售 货 合 同
+        <small style="position: absolute;right: 30px;font-size: 14px;">No: <span style="display: inline-block; width: 100px;text-align: left">{$billHead.contract_no}</span></small>
+      </th>
+    </tr>
+    <tr class="no_border">
+      <th colspan="6" style="text-align: center;font-size: 2em; position: relative;">SALES CONTRACT
+        <small style="position: absolute;right: 30px;font-size: 14px;">
+          Date: <span style="display: inline-block; width: 100px;text-align: left">{$billHead->getData('create_time')-90*24*3600|date="Y/m/d",###}</span>
+        </small>
+      </th>
+    </tr>
+    <tr class="no_border">
+      <td style="text-align: right;padding-right: 20px;" rowspan="2">Seller:</td>
+      <td style="text-align: left" colspan="2">{$billHead.deliver.name}</td>
+      <td style="text-align: right;padding-right: 20px;" rowspan="2">Buyer:</td>
+      <td style="text-align: left" colspan="2"></td>
+    </tr>
+    <tr class="no_border">
+      <td style="text-align: left" colspan="2">ADD:</td>
+      <td style="text-align: left" colspan="2">ADD:</td>
+    </tr>
+    <tr class="no_border">
+      <th colspan="6" style="text-align: left">下列签字双方同意按以下条款达成交易：</th>
+    </tr>
+    <tr class="no_border">
+      <th colspan="6" style="text-align: left">The undersigned Sellers and Buyers have agreed to the
+        followingtransactions according to the terms and conditions stipulated below:
+      </th>
+    </tr>
+    <tr>
+      <td>货号</td>
+      <td>品名</td>
+      <td colspan="2">数量</td>
+      <td>单价</td>
+      <td>金额</td>
+    </tr>
+    <tr>
+      <td>Article No.</td>
+      <td>Descriptions</td>
+      <td colspan="2">Quantity</td>
+      <td>Unit Price</td>
+      <td>Amount</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td colspan="2"></td>
+      <td></td>
+      <td>FOB NINGBO</td>
+    </tr>
+    {volist name="$contract" id="cargo" empty="暂时没有数据" }
+    <tr>
+      <td></td>
+      {empty name="$cargo.name"}
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      {else}
+        <td>{$cargo.name}</td>
+        <td>{$cargo.unit1}</td>
+        <td>{$cargo.unit}</td>
+        <td>{$billHead.currency}{$cargo.price}</td>
+        <td>{$billHead.currency}{$cargo.amount}</td>
+        {eq name="$i" value="1"}
+        {assign name="sum_amount" value="$cargo.amount" /}
+        {else}
+        {assign name="sum_amount" value="$sum_amount+$cargo.amount" /}
+        {/eq}
+        {/empty}
+    </tr>
+    {/volist}
+    <tr>
+      <td width="11%">合计/TOTAL</td>
+      <td width="30%"></td>
+      <td width="8%"></td>
+      <td width="5%"></td>
+      <td width="10%"></td>
+      <td width="15%">{$billHead.currency}{$sum_amount}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left" style="padding-left: 20px;">装运期限:&nbsp;{$billHead->getData('create_time')-15*24*3600|date="Y年m月d日",###} 之前</td>
+      <td colspan="4"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left" style="padding-left: 20px;">Time of Shipment:&nbsp;BEFORE {$billHead->getData('create_time')-15*24*3600|date="d/M.y",###}</td>
+      <td colspan="4"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left" style="padding-left: 20px;">装运口岸:&nbsp;</td>
+      <td colspan="4" class="text_left" style="padding-left: 20px;">目的地:&nbsp;</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left" style="padding-left: 20px;">Port of loading:&nbsp;NINGBO，CHINA</td>
+      <td colspan="4" class="text_left" style="padding-left: 20px;">Port of destination:&nbsp;{$billHead->unloading_port_str}&nbsp;{$billHead->country->country_na}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6" class="text_left" style="text-indent: 20px;">
+        付 款 条 件:&nbsp;在 日之前开给我方100%保兑的不可撤回的即期付款信用证，须注明可在装运日期后十五天内在中 国议付有效,可以转船及分批装运。
+      </td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6" class="text_left" style="text-indent: 20px;">
+        Terms of payment:&nbsp;By 100% confirmed & irrevocable L/C to be available by sight draft, reaching the Sellersdays
+        before the month of shipment, remaining valid for negotiation in China for further 15 days after the prescribed
+        tine of . shipment, allowing transhipment & partial shipment
+      </td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6" class="text_left">
+        保险: 投保一切险，由卖方按发票全额110%投保。
+      </td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6" class="text_left">
+        Insurance:Covering ALL Risks for 110% of invoice value to be effected by the Sellers.
+      </td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left">特别条款</td>
+      <td colspan="4" class="text_left">一般条款</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" class="text_left">Special clause</td>
+      <td colspan="4" class="text_left">General Terms & conditions (please see overleaf)</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2">买方</td>
+      <td colspan="4">卖方</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2">The Buyer</td>
+      <td colspan="4">The Seller</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2"></td>
+      <td colspan="4">{$billHead.deliver.name}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="6"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2">(signed by manager)</td>
+      <td colspan="4">(signed by manager)</td>
+    </tr>
+    </tbody>
+  </table>
+  {/volist}
+</div>

@@ -1,0 +1,128 @@
+<style>
+
+  .tab-content {
+    box-shadow: 1px -2px 3px 3px #ccc;
+  }
+
+  [class^=preview-a-] {
+    height: 100%;
+  }
+
+</style>
+<section class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-sm-4 text-center-xs">编号: {$billHead->serial_no}</div>
+      <div class="col-sm-4 text-center text-center-xs">{$billHead->export_port_str} <i class="fa fa-arrow-right"></i>
+        {$billHead->unloading_port_str}
+      </div>
+      <div class="col-sm-4 text-right text-center-xs">{$billHead->create_time}</div>
+    </div>
+  </div>
+  <div class="panel-body row">
+    <div class="col-sm-3">
+      <a href="#detail_nav" type="button" class="btn btn-info visible-xs btn-block"
+         data-toggle="class:show animated fadeInDown">
+        <span class="text"><i class="fa fa-arrow-down"></i> 展开</span>
+        <span class="text-active"><i class="fa fa-arrow-up"></i> 收起</span>
+      </a>
+      <ul class="nav nav-pills nav-stacked b-a wrapper r text-center-xs hidden-xs" id="detail_nav">
+        <li class="active"><a href="#baoguandan" data-toggle="tab">报关单</a></li>
+        <li><a href="#fapiao" data-toggle="tab">发票</a></li>
+        <li><a href="#zhuangxiangdan" data-toggle="tab">装箱单</a></li>
+        <li><a href="#hetong" data-toggle="tab">合同</a></li>
+        <li><a href="#ganghang" data-toggle="tab">港航</a></li>
+        <li><a href="#weituoshu" data-toggle="tab">委托书</a></li>
+        <li><a href="#shenbaoqingdan" data-toggle="tab">申报清单</a></li>
+        <li><a href="#jianhuaqingdan" data-toggle="tab">简化清单</a></li>
+        <li><a href="#jianhuaguilei" data-toggle="tab">简化归类货物清单</a></li>
+        <li><a href="#lianwangqingdan" data-toggle="tab">联网清单</a></li>
+        <li><a href="#caigouqingdan" data-toggle="tab">采购清单</a></li>
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <div class="text-center padder-v">
+        {if $billHead->status eq 2}
+        <button type="button" class="btn btn-warning btn-s-md declare-one">申报</button>
+        {/if}
+        <button type="button" class="btn btn-info btn-s-md export-one">导出</button>
+        <button type="button" class="btn btn-default btn-s-md preview">预览</button>
+      </div>
+      <div class="tab-content b-a wrapper r text-center ">
+        {include
+        file='index/baoguandan,index/weituoshu,index/shenbaoqingdan,index/caigouqingdan,index/lianwangqingdan,index/fapiao,index/zhuangxiangdan,index/hetong,index/ganghang,index/jianhuaqingdan,index/jianhuaguilei'
+        /}
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript" src="<?=__STATIC__?>/js/jquery.media.js"></script>
+<script type="text/javascript">
+  jQuery(function () {
+    // 导出/预览
+    $(':button.export-one,.preview').click(function () {
+      var $this = $(this);
+      var action = $(this).closest('div.panel-body').find('li.active>a').attr('href').substring(1);
+      if ('lianwangqingdan' === action) {
+        location.href = '/public/index/pdf/export_excel/id/{$Request.param.id}';
+        return false;
+      }
+      if($this.hasClass('export-one')){
+        location.href = '/public/index/pdf/export_excel/id/{$Request.param.id}';
+        return false;
+      }
+      $.get('/public/index/pdf/show/id/{$Request.param.id}', {type: action}).done(function (response) {
+        if (!response) {
+          return layer.alert('404');
+        }
+        // jquery.media.js http://malsup.com/jquery/media
+        if ($this.hasClass('preview')) {
+          var aClass = 'preview-a-' + +new Date();
+          $(document.body).append('<a class="' + aClass + '" href="' + response + '"></a>');
+          $('a.' + aClass).media({width: '100%', height: '100%'});
+          if (!(window.ActiveXObject || "ActiveXObject" in window)) {
+            layer.open({
+              title: '预览',
+              type: 1,
+              content: $('.' + aClass),
+              area: ['70%', '90%'],
+              maxmin: true,
+              end: function () {
+                $('div.' + aClass).remove()
+              }
+            });
+            // 解决360浏览器打开高宽不占100% 情况
+            setTimeout(function () {
+              var $page = $('.layui-layer-page');
+              $page.css('top', parseFloat($page.css('top')) + 1 + 'px')
+            },300)
+          } else {
+            layer.msg('当前浏览器不支持在线预览,请下载后查看', {offset: '100px'})
+          }
+          return false;
+        }
+        downloadFile(response);
+      });
+    });
+
+    // 申报
+    $(':button.declare-one').click(function () {
+      var _this = this;
+      layer.confirm('确认申报吗?', function (index) {
+        layer.close(index);
+        var loadIndex = layer.load()
+        $.post('/public/index/digital_china/tcso1/', {
+          id: '{$Request.param.id}'
+        }).done(function (response) {
+          console.log(response);
+          layer.close(loadIndex);
+          layer.open({
+            title: '提示',
+            content: '申报数据已提交,请等待审核结果!'
+          });
+          $(_this).attr('disabled', true).html('已申报')
+        });
+      });
+    });
+  });
+</script>

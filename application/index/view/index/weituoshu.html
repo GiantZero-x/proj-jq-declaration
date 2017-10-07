@@ -1,0 +1,217 @@
+<link rel="stylesheet" href="<?=HTTP_HOST?>__STATIC__/css/bootstrap.css" type="text/css"/>
+<!-- 自定义 -->
+<link rel="stylesheet" href="<?=HTTP_HOST?>__STATIC__/less/app.css" type="text/css"/>
+{include file='index/style' /}
+<style>
+  #weituoshu h3, #weituoshu h5, #weituoshu p {
+    color: #000;
+    font-family: SimSun;
+    font-weight: bold;
+  }
+
+  #weituoshu p {
+    font-size: 16px;
+    font-weight: normal;
+  }
+
+  .text-indent-2 {
+    text-indent: 2em;
+  }
+  #weituoshu td {
+    border-color: #666;
+    height: 20px;
+    line-height: 20px;
+    font-size:13px;
+  }
+
+  table td {
+    font-family: SimSun;
+  }
+  .text_box{
+    border:1px solid #000;
+    display: inline-block;
+    width: 13px;
+    line-height: 13px;
+    margin-right: 3px;
+  }
+
+  @media print {
+    #think_page_trace_open, .breadcrumb, .panel-heading, .col-sm-3, .padder-v {
+      display: none;
+    }
+
+    .panel-body, .wrapper {
+      padding: 0;
+    }
+
+    .panel {
+      border: none;
+    }
+
+    .tab-content {
+      border: none;
+      box-shadow: none;
+    }
+
+    h3 {
+      margin-top: 0;
+    }
+  }
+</style>
+<div class="tab-pane text-center" id="weituoshu" style="background-color: #fff">
+  <h3 style="font-family: SimHei">代 理 报 关 委 托 书</h3>
+  <h5 class="text-right wrapper" style="padding-right: 70px;font-family: SimHei">编号：&nbsp;&nbsp;<span style="font-family: SimSun;font-size: 1.2em;">{$billHead.serial_no}</span>
+  </h5>
+  <p class="text-left m-n">{$billHead->broker->name}：</p>
+  <p class="text-left text-indent-2 m-n">我单位现 A （<b>A逐票、B长期</b>）委托贵公司代理 ABD 等通关事宜。（<b>A、填单申报 B、辅助查验 C、垫缴税款 D、办理海关证明联 E、审批手册
+    F、核销手册 G、申报减免税手续 H、其他</b>）详见《委托报关协议》。
+  </p>
+  <p class="text-left text-indent-2 m-n">我单位保证遵守《海关法》和国家有关法规，保证所提供的情况真实，完整、单货相符，无侵犯他人知识产权的行为。否则，愿承担相关法律责任。</p>
+  <p class="text-left text-indent-2 m-n">本委托书有效期自签字之日起至 {:date('Y')} 年 12 月 31 日止。</p>
+  <p class="m-b-xl" style="position: relative;padding-left: 180px;">委托方（盖章）：
+      {empty name="billHead->deliver->office_seal"}
+      <img src="<?=HTTP_HOST?>__STATIC__/images/zhang.png" alt="报关章1" style="position: absolute;top: -75px; right: 22px;width: 255px;">
+      {else/}
+    <div style="position: absolute; right: -30px;width: 406px;margin-top: -115px;">
+      <img src="<?=HTTP_HOST?>{$billHead->deliver->office_seal}" alt="报关章1" style="position: unset;width: 154px">
+      <img src="<?=HTTP_HOST?>{$billHead->deliver->customs_seal}" alt="报关章1" style="position: unset;width: 74px;margin-top: 68px;">
+    </div>
+      {/empty}
+  </p>
+  <p style="padding-left: 105px;">法定代表人或其授权签署《代理报关委托书》的人（签字）</p>
+  <p class="text-right" style="padding-right: 60px;">{$billHead.create_time_chs}</p>
+  <h3 style="font-family: SimHei">委 托 报 关 协 议</h3>
+  <p class="text-left m-n">为明确委托报关具体事项和责任，双方经平等协商签订协议如下：</p>
+  <table class="pull-left" style="width: 49%;">
+    <tbody>
+    <tr style="border: 2px solid #000;border-bottom: 1px solid #000;">
+      <td width="40%">委托方</td>
+      <td>{$billHead.deliver->name}</td>
+    </tr>
+    <tr style="border: 2px solid #000;border-top: 1px solid #000;">
+      <td>主要货物名称</td>
+      <td>{$billHead->cargos[0]->name}</td>
+    </tr>
+    <tr>
+      <td>HS编码</td>
+      <td>{foreach $billHead->cargos[0]->hs_code_arr as $c}<span class="text_box">{$c}</span>{/foreach}</td>
+    </tr>
+    <tr>
+      <td>货物总价</td>
+      <td>{$billHead->currency} {$billHead->sum_cargos->total}</td>
+    </tr>
+    <tr>
+      <td>进出口日期</td>
+      <td>{$billHead.create_time_chs}</td>
+    </tr>
+    <tr>
+      <td>提单号</td>
+      <td>{$billHead.bill_no}</td>
+    </tr>
+    <tr style="border: 2px solid #000;">
+      <td>贸易方式</td>
+      <td>{$billHead->supervise_mode_str}</td>
+    </tr>
+    <tr>
+      <td>原产地/货源地</td>
+      <td>义乌</td>
+    </tr>
+    <tr>
+      <td style="height: 140px;vertical-align: top;text-align: left;padding-left: 8px;" class="n_r">其他要求：</td>
+      <td class="n_l" style="text-align: left;font-size: 16px;"><b>出口口岸已确认</b></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="height: 75px;vertical-align: top;text-align: left;font-size: 12px;padding-left: 8px;">背面所列通用条款是本协议不可分割的一部分，对本协议的签署构成了对背面通用条款的同意。</td>
+    </tr>
+    <tr>
+      <td class="n_r" style="padding-left: 8px;height: 160px;vertical-align: top;text-align: left;font-size: 13px;">
+        <span style="display: inline-block;margin-bottom: 60px">委托方业务签章：</span><br>
+        经办人签章：<br>
+        联系电话：
+      </td>
+      <td class="n_l"
+          valign="bottom"
+          style="text-align: right!important;padding-bottom: 15px;font-size: 13px;">{$billHead.create_time_chs}
+          {empty name="billHead->deliver->office_seal"}
+          <img   src="<?=HTTP_HOST?>__STATIC__/images/zhang.png" alt="报关章1"  style="position: absolute;bottom: 80px; left: 61px;width: 255px;">
+          {else/}
+          <div style="position: absolute;bottom: 80px; left: 61px;width: 255px;">
+              <img src="<?=HTTP_HOST?>{$billHead->deliver->office_seal}" alt="报关章1" style="position: unset;width: 154px">
+              <img src="<?=HTTP_HOST?>{$billHead->deliver->customs_seal}" alt="报关章1" style="position: unset;width: 74px;margin-top: 68px;">
+          </div>
+          {/empty}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <table class="pull-right" style="width: 49%;">
+    <tbody>
+    <tr style="border: 2px solid #000;border-bottom: 1px solid #000;">
+      <td width="40%">被委托方</td>
+      <td colspan="2">{$billHead->broker->name}</td>
+    </tr>
+    <tr style="border: 2px solid #000;border-top: 1px solid #000;">
+      <td class="red_dot">报关单编码</td>
+      <td colspan="2"><span class="pull-left" style="padding-left: 8px;">No.</span></td>
+    </tr>
+    <tr>
+      <td>收到单证日期</td>
+      <td colspan="2">{$billHead.create_time_chs}</td>
+    </tr>
+    <tr>
+      <td rowspan="4">收到单证情况</td>
+      <td width="34%">合同 <input type="checkbox" checked disabled></td>
+      <td width="26%">发票 <input type="checkbox" checked disabled></td>
+    </tr>
+    <tr>
+      <td>装箱清单 <input type="checkbox" checked disabled></td>
+      <td>提(运)单 <input type="checkbox" disabled></td>
+    </tr>
+    <tr>
+      <td>加工贸易手册 <input type="checkbox" disabled></td>
+      <td>许可证件 <input type="checkbox" disabled></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align: left!important;padding-left: 8px">其他</td>
+    </tr>
+    <tr>
+      <td>报关收费</td>
+      <td colspan="2"><span class="pull-left" style="padding-left: 8px;">人民币：</span> 100 元</td>
+    </tr>
+    <tr>
+      <td style="height: 140px;vertical-align: top;text-align: left;padding-left: 8px;" class="n_r">承诺说明：</td>
+      <td class="n_l" colspan="2"></td>
+    </tr>
+    <tr>
+      <td colspan="3" style="padding-left: 8px;height: 75px;vertical-align: top;text-align: left;font-size: 12px;">背面所列通用条款是本协议不可分割的一部分，对本协议的签署构成了对背面通用条款的同意。</td>
+    </tr>
+    <tr>
+      <td class="n_r" style="padding-left: 8px;height: 160px;vertical-align: top;text-align: left;font-size: 13px;">
+        <span style="display: inline-block;margin-bottom: 60px">被委托方业务签章：</span><br>
+        经办保关员签章：<br>
+        联系电话：
+      </td>
+      <td class="n_l" valign="bottom" style="text-align: right!important;padding-bottom: 15px;position: relative;font-size: 13px;"
+          colspan="2">
+        {empty name="billHead->broker->office_seal"}
+          <img src="<?=HTTP_HOST?>__STATIC__/images/章2.png" alt="报关章2" style="position: absolute;top: -13px; left: -24px;width: 141px;">
+          {else/}
+          <img src="<?=HTTP_HOST?>{$billHead->broker->office_seal}" alt="报关章2" style="position: absolute;top: -13px; left: -24px;width: 141px;">
+        {/empty}
+        {empty name="billHead->broker->customs_seal"}
+          <img src="<?=HTTP_HOST?>__STATIC__/images/报关章3.jpg" alt="报关章3" style="position: absolute;top: 106px; left: -51px;">
+          {else/}
+          <img src="<?=HTTP_HOST?>{$billHead->broker->customs_seal}" alt="报关章3" style="position: absolute;top: 106px; left: -51px;">
+          {/empty}
+          {$billHead.create_time_chs}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="clearfix"></div>
+  <p style="font-size: 13px;">
+    <span class="pull-left"><img src="<?=HTTP_HOST?>__STATIC__/images/报关章4.png" alt="报关章4"></span>
+    （白联：海关留存、黄联：被委托方留存、红联：委托方留存）
+    <span class="pull-right">中国报关协会监制</span>
+  </p>
+</div>

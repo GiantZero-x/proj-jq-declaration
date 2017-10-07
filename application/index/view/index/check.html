@@ -1,0 +1,40 @@
+<section class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-sm-4 text-center-xs">编号:{$billHead->serial_no}</div>
+            <div class="col-sm-4 text-center text-center-xs">{$billHead->export_port} <i class="fa fa-arrow-right"></i> {$billHead->unloading_port_str}</div>
+            <div class="col-sm-4 text-right text-center-xs">{$billHead->create_time}</div>
+        </div>
+    </div>
+    <div class="panel-body row">
+        <div class="tab-content b-a wrapper r text-center">
+            <div class="tab-pane active" id="baoguandan">
+               {include file='index/baoguandan' /}
+            </div>
+        </div>
+        <div class="text-center padder-v">
+            <div class="form-group">
+                <textarea rows="3" style="width: 100%;" placeholder="请输入审核意见" id="check_opinion"></textarea>
+            </div>
+            <button type="button" class="btn btn-success btn-s-md" data-result='1'>通过</button>
+            <button type="button" class="btn btn-danger btn-s-md" data-result='2'>不通过</button>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $('.btn-s-md').click(function(){
+        var check_result = $(this).data('result');
+        var check_opinion= $('#check_opinion').val();
+        var id = "{$Request.param.id}";
+        console.log(check_opinion);
+        $.post('{:url("index/index/checked")}', {
+            check_result:check_result,
+            check_opinion:check_opinion,
+            id : id
+        }, function(res){
+            layer.msg('提交成功');
+            setTimeout(window.location.href='{:url("index/index/index")}', 3000);
+        });
+      
+    });
+</script>

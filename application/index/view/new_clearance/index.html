@@ -1,0 +1,692 @@
+<link rel="stylesheet" href="<?=__STATIC__?>/js/select2/select2.css" type="text/css" />
+<link rel="stylesheet" href="<?=__STATIC__?>/js/select2/theme.css" type="text/css" />
+<style>
+.scrollable { overflow-y:hidden;}
+</style>
+<div class="wizard m-b-sm" data-initialize="wizard" id="myWizard">
+    <!--　头部　-->
+    <div class="row">
+        <div class="col-md-8">
+            <!-- 显示步骤 -->
+            <div class="steps-container">
+                  <div class="m-sm">
+                        <a href="<?=HTTP_HOST;?>/public/uploads/新建报关单模板.xlsx" download class="btn btn-info btn-rounded "><span class="fa fa-upload"></span>下载模版</a>
+                        <button type="button" class="btn btn-info btn-rounded  upload_excel"><span class="fa fa-arrow-circle-down"></span>导入</button>
+                        <!-- 隐藏上传excel按钮 -->
+                        <input type="file" class="hide upload_excel_input">
+                        <button type="button" class="btn btn-info btn-rounded " id="save"><span class="fa fa-clipboard"></span>保存草稿</button>
+                    </div>
+          
+            </div>
+        </div>
+        <div class="col-md-4">
+          
+            <div class="actions">
+                <button type="button" class="btn btn-warning btn-prev" data-last="提交报关单">
+                    <span class="fa fa-check"></span>提交
+                </button>
+                <button type="button" class="btn btn-default btn-next" data-last="返回" onclick="javascript:history.back(-1);">返回
+                    <span class="fa fa-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 容器 -->
+    <div class="step-content">
+        <!-- 1.运输 -->
+        <div class="step-pane active" data-step="1">
+            <form class="form-horizontal" data-form="1">
+                <input type="hidden" name="status" value="1" id="head_bill_status">
+                <input type="hidden" name="user_id" value="{$user_id}" >
+                <input type="hidden" name="id"  id="bill_head_id">
+                <input type="hidden" name="classify_type"  id="classify_type">
+                <input name="total_cases" type="hidden" class="total_cases form-control">
+                <input name="total_weight" type="hidden" class="total_weight form-control">
+                <input name="total_money" type="hidden" class="total_money form-control">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">客户:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="customer" data-trigger="change" data-required="true" tabindex="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">出口口岸:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" name="export_port" tabindex="10" data-trigger="change" data-required="true">
+                                    <option value="">请选择</option>
+                                    {foreach $headDD.export_port as $v}
+                                    <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">编号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" tabindex="2" name="serial_no" id="serial_no">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">目的国:</label>
+                            <div class="col-sm-9">
+                                <select id='aim_country' name="aim_country" tabindex="11" data-select="select2" style="width: 100%;" data-trigger="change" data-required="true">
+                                    <option value="">请选择</option>
+                                    {foreach $country as $v}
+                                    <option value="{$v.country_co}">{$v.country_na}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">合同号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" disabled tabindex="3" name="contract_no">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">目的港口:</label>
+                            <div class="col-sm-9">
+                                <select name="unloading_port" tabindex="12" id="unloading_port" class="form-control" data-trigger="change" data-required="true">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">提单号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="bill_no" tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">船名:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="ship_name" tabindex="13">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+               
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">白卡号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="white_card_no" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">航次:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="voyage_no" tabindex="14">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">车牌号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="car_no" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">境内运输方式:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" data-trigger="change" data-required="true" name="inland_mode" tabindex="15">
+                                    <option value="">请选择</option>
+                                    {foreach $headDD.inland_mode as $v}
+                                    <option value="{$v.value}"
+                                        {if $v.value eq $cusParams.0.inland_mode}selected{/if}>{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+               
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">放行号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="allclear_no" tabindex="7" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">截关:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="closing" tabindex="16">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">箱号:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="box_no" tabindex="8">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">包装方式:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" data-trigger="change" data-required="true" name="pack" tabindex="17">
+                                    <option value="">请选择</option>
+                                    {foreach $headDD.pack as $v}
+                                    <option value="{$v.value}"
+                                    {if $v.value eq $cusParams.0.pack}selected{/if}>{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">柜型:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" data-trigger="change" data-required="true" name="box_type" tabindex="9">
+                                    <option value="">请选择</option>
+                                    {foreach $headDD.box_type as $v}
+                                    <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">装柜方式:</label>
+                            <div class="col-sm-9">
+                                <select class="form-control" data-trigger="change" data-required="true" name="loading_mode" tabindex="18">
+                                    {foreach $headDD.loading_mode as $v}
+                                    <option value="{$v.value}" {if $v.value eq 1}selected{/if}>{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">征免性质</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" name="exemption_mode" id="exemption_mode"
+                                    tabindex="19">
+                                    {foreach $cusParams as $v}
+                                        <option value="{$v.exemption_mode}">{$v.exemption_mode}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">监管方式</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" name="supervise_mode"
+                                    id="supervise_mode" tabindex="24">
+                                    {foreach $headDD.supervise_mode as $v}
+                                        <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+               <div class="row">
+                      <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">成交方式</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="terms_mode"
+                                    name="terms_mode" tabindex="20">
+                                    {foreach $headDD.terms_mode as $v}
+                                        <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                      </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">报关单类型</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="customs_case_type"
+                                    name="customs_case_type" tabindex="25">
+                                    {foreach $headDD.customs_case_type as $v}
+                                        <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">报关方式</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init"  id="ediID" name="ediID" tabindex="21">
+                                    {foreach $headDD.ediID as $v}
+                                        <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">护照</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="passportId" name="passport_id" tabindex="26">
+                                    {foreach $passport as $v}
+                                        <option value="{$v.id}">{$v.name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">报关行</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="customs_broker_id" name="customs_broker_id" tabindex="22">
+                                    {foreach $cusBroker as $v}
+                                        <option value="{$v.id}">{$v.name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">经营单位抬头</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="correlate_company_id_deliver" name="correlate_company_id_deliver" tabindex="27">
+                                   <!--  <option value="">请选择</option> -->
+                                    {foreach $deliverCompany as $v}
+                                        <option value="{$v.id}">{$v.name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">生产销售单位抬头</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="correlate_company_id_business"
+                                    name="correlate_company_id_business" tabindex="23">
+                                   <!--  <option value="">请选择</option> -->
+                                    {foreach $businessCompany as $v}
+                                        <option value="{$v.id}">{$v.name}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">申报地海关</label>
+                            <div class="col-sm-9">
+                                <select class="form-control init" id="customs_address"
+                                name="customs_address" tabindex="28">
+                                    <!-- <option value="">请选择</option> -->
+                                    {foreach $headDD.customs_address as $v}
+                                        <option value="{$v.value}">{$v.key}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">外贸公司:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="trade_corporation" tabindex="5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">采购商:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="procurer" tabindex="14">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">证件:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="certificate" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">证件号:</label>
+                             <div class="col-sm-9">
+                                <input type="text" class="form-control" data-trigger="change" data-required="true" name="certificate_no" tabindex="6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">总件数</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control customer_total_pgs total_cases">
+                            </div>
+                        </div>
+                     </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">总毛重</label>
+                            <div class="col-sm-9">
+                               <input type="text" name="total_weight" class="form-control customer_total_gross total_weight">
+                            </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">组货单位</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control set_unit" value="{$cusBroker.0.set_unit}" name='set_unit' readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 necessary">总额</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control total_totalPrice">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                 <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 ">汇总件数</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control total_pgs">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 ">汇总毛重</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control total_gross">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3 ">汇总净重</label>
+                            <div class="col-sm-9">
+                               <input type="text" class="form-control total_net">
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                </div>
+            </form>
+     
+        <!-- 2.商品 -->
+        <header class="panel-heading bg-light" style="margin-top: 5px;">
+                      <ul class="nav nav-tabs nav-justified">
+                        <li class="active"><a href="#raw-data" data-toggle="tab">原始数据录入</a></li>
+                        <li><a href="#classified-data" data-toggle="tab">归类数据清单</a></li>
+                      </ul>
+        </header>
+        
+         <div class="tab-content">
+                    <div class="tab-pane active" id="raw-data">
+                          <div class="step-pane " data-step="2">
+                                <form data-form="2">
+                                    <div class="panel panel-default" style="position:relative;">
+                                        <div class="panel-heading" style="overflow: hidden;line-height: 35px; padding: 4px 15px;">
+                                        
+                                            <div class="col-sm-6 text-center-xs " style=" width:auto; position:absolute; right:15px; top:-40px;">
+                                                
+                                                <span class="btn btn-primary btn-rounded m-r-xs add_item" style="padding:2px 6px;"><i class="fa fa-edit"></i>手动新增</span>
+                                                <span type="button" id="merge" class="btn btn-info btn-rounded  classify" data-type="2" style="padding:2px 6px;"><i class="fa fa-th-large"></i>归类合并</span>
+                                                <span type="button" class="btn btn-info btn-rounded classify" data-type="1" style="padding:2px 6px;"><i class="fa fa-th-large"></i>归类不合并</span>
+                                                <span class="btn btn-default btn-rounded del_batch" style="padding:2px 6px;"><i class="fa fa-trash-o"></i>批量删除</span>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive">
+                                           <div class="table_header">
+                                                <table class="table table-bordered b-t b-light" style="margin-bottom: 0;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="2%"><input type="checkbox"></th>
+                                                            <th width="9%" style="position: relative;">HS编码<span class="btn btn-link btn-xs sort_hs_code" data-toggle="button">
+                                                                <span class="text" style="position: absolute; top: 6px; right: 13px;"><i class="fa fa-arrow-up"></i></span>
+                                                                <span class="text-active" style="position: absolute; top: 6px; right: 13px;"><i class="fa fa-arrow-down"></i></span>
+                                                            </span></th>
+                                                            <th width="13%">商品名称</th>
+                                                            <th width="8%">品名查询</th>
+                                                            <th width="7%">件数</th>
+                                                            <th width="7%">毛重</th>
+                                                            <th width="7%">净重</th>
+                                                            <th width="7%">单位</th>
+                                                            <th width="7%">单位2</th>
+                                                            <th width="8%">涉通关单</th>
+                                                            <th width="6%">涉税</th>
+                                                            <th width="8%">商户号</th>
+                                                            <th>比例</th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                 <div class="table_content" style="overflow-y: scroll; max-height:400px;">
+                                                     <table class="table table-bordered b-t b-light">
+                                                         <tbody></tbody>
+                                                     </table>
+                                                 </div>
+                                        </div>
+                                      
+                                    </div>
+                                </form>
+                            </div>   
+                    </div>
+                    <div class="tab-pane" id="classified-data">
+                        <div class="step-pane " data-step="3">
+                                <form data-form="3">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" style="overflow: hidden;line-height: 35px; padding: 4px 15px;">
+                                             <!--<div class="col-sm-6 text-center-xs">编号:<span class="number"></span></div>
+                                           <div class="col-sm-6 text-center-xs text-right">
+                                                <span class="btn btn-danger btn-rounded del_batch">批量删除</span>
+                                                <span class="btn btn-primary btn-rounded m-r-xs add_item">手动新增</span>
+                                            </div>-->
+                                        </div>
+                                        <div class="table-responsive">
+                                            <div class="table_header">
+                                            <table class="table table-bordered b-t b-light" style="margin-bottom: 0;">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="2%"><input type="checkbox"></th>
+                                                        <th width="10%">HS编码</th>
+                                                        <th width="13%">商品名称</th>
+                                                        <th width="15%">规格</th>
+                                                        <th width="8%">件数</th>
+                                                        <th width="8%">毛重</th>
+                                                        <th width="8%">净重</th>
+                                                        <th width="8%">数量</th>
+                                                        <th width="8%">申报单位</th>
+                                                        <th width="8%">单价</th>
+                                                        <th width="8%">总价</th>
+                                                        <th>数重比</th>
+                                                    </tr>
+                                                  </thead>
+                                               </table>
+                                            </div>
+
+                                            <div class="table_content" style="overflow-y: scroll; max-height:400px;">
+                                                     <table class="table table-bordered b-t b-light">
+                                                         <tbody></tbody>
+                                                     </table>
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                </form>
+                            </div>
+                    </div>
+             
+          </div>
+
+    </div>
+
+    <!-- 功能按钮-->
+ 
+</div>
+
+<div class="chooseGoodsBox">
+    <table>
+        <thead>
+        <tr>
+            <th width="50%">HS编码</th>
+            <th>HS商品名称</th>
+        </tr>
+        </thead>
+        <tbody class="goodsList">
+        </tbody>
+    </table>
+</div>
+<!-- select2 -->
+<script src="<?=__STATIC__?>/js/select2/select2.min.js"></script>
+<!-- fuelux -->
+<script src="<?=__STATIC__?>/js/fuelux/wizard.js"></script>
+<script src="<?=__STATIC__?>/js/parsley/parsley.min.js"></script>
+
+<script type="text/javascript">
+    $('#aim_country').change(function(){
+        var port_count = $(this).val();
+        $.getJSON("{:url('index/new_clearance/get_init_passport')}?port_count="+port_count, function(res){
+            if (res){
+                $('#passportId').val(res);
+            }
+        });
+        $('#unloading_port').children().not(':first-child').remove();
+        $.ajaxSettings.async = false;
+        if (port_count){
+            $.getJSON("{:url('index/new_clearance/get_port_lin')}" + "?port_count=" + port_count, function(data){
+                var html = '';
+                $.each(data, function(k, v){
+                    html += '<option value="'+ v.port_code +'">'+ v.port_c_cod +'</option>';
+                });
+                $('#unloading_port').find('option').after(html);
+            });
+        }
+        $.ajaxSettings.async = true;
+    });
+    $.getJSON("{:url('index/new_clearance/init')}", function(data){
+        var cusParams = data.cusParams;
+        var cusBroker = data.cusBroker;
+
+        $.each(cusParams, function(k, v){
+            if (!$('#exemption_mode').val()){
+               $('#exemption_mode').val(v.exemption_mode);
+            }
+            if (!$('#supervise_mode').val()){
+               $('#supervise_mode').val(v.supervise_mode);
+            }
+            if (!$('#terms_mode').val()){
+               $('#terms_mode').val(v.terms_mode);
+            }
+        })
+        $.each(cusBroker, function(k, v){
+            if (!$('#customs_case_type').val()){
+               $('#customs_case_type').val('M');
+            }
+            if (!$('#ediID').val()){
+               $('#ediID').val('1');
+            }
+            if (!$('#customs_broker_id').val()){
+               $('#customs_broker_id').val(v.id);
+            }
+            if (!$('#correlate_company_id_deliver').val()){
+               $('#correlate_company_id_deliver').val(v.correlate_company_id_deliver);
+            }
+            if (!$('#correlate_company_id_business').val()){
+               $('#correlate_company_id_business').val(v.correlate_company_id_business);
+            }
+        })
+    });
+</script>
+
+<script type="text/javascript">
+    var billHead = $.parseJSON('{$billHead}'),
+      get_cargo_url = "{:url('index/new_clearance/get_cargo')}?id="
+</script>
+<script src="<?=__STATIC__?>/js/new_clearance.js"></script>
+
+<script type="text/javascript">
+    $('.total_weight').change(function(){
+        $('.total_weight').val($(this).val());
+    });
+    $('.total_cases').change(function(){
+        $('.total_cases').val($(this).val());
+    });
+    $('.total_money').change(function(){
+        $('.total_money').val($(this).val());
+    });
+    if (!$("input[name='loading_mode']").val()){
+        $("input[name='loading_mode']").val(1);
+    }
+
+
+
+    $(document).ready(function(){
+　　　　$('.number').html($('#serial_no').val());
+    });
+
+    $('#serial_no').change(function(){
+        $('.number').html($(this).val());
+    });
+</script>
+

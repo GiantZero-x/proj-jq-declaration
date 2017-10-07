@@ -1,0 +1,41 @@
+{include file='index/style' /}
+<div class="tab-pane" id="lianwangqingdan">
+    <table>
+        <tbody>
+        <tr>
+            <th>商户</th>
+            <th class="red_dot">商品名称</th>
+            <th>商品HS编码</th>
+            <th>货号/唛头</th>
+            <th>规格型号</th>
+            <th>生产厂商</th>
+            <th>品牌</th>
+            <th class="red_dot">交易数量</th>
+            <th class="red_dot">单位</th>
+            <th class="red_dot">包装数量</th>
+            <th class="red_dot">包装单位</th>
+            <th class="red_dot">币种</th>
+            <th class="red_dot">货值</th>
+            <th class="red_dot">重量(KGS)</th>
+        </tr>
+        {volist name="billHead->cargos" id="cargo" empty="暂时没有数据" }
+        <tr>
+            <td>{$cargo.market_no}</td>
+            <td>{$cargo.name}</td>
+            <td>{$cargo.hs_code}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{$cargo.number}</td>
+            <td>{$cargo.unit}</td>
+            <td>{$cargo.case_no}</td>
+            <td>{$billHead.pack_str}</td>
+            <td>{$billHead.currency}</td>
+            <td>{$cargo.amount}</td>
+            <td>{$cargo.net_weight}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+</div>

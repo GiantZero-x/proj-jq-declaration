@@ -1,0 +1,111 @@
+{include file='index/style' /}
+<style>
+  #zhuangxiangdan {
+    font-family: SimSun;
+  }
+
+  #zhuangxiangdan td {
+    border: none;
+    font-size: 16px;
+    height: 34px;
+    line-height: 34px;
+  }
+</style>
+<div class="tab-pane" id="zhuangxiangdan">
+  {assign name="list" value="1"}
+  {volist name="$billHead->packing_list" id="cargos" empty="暂时没有数据" }
+  <table>
+    <tbody>
+    <tr class="no_border">
+      <td colspan="11" style="font-size: 2em; text-align: center;">{$billHead.deliver.name}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="11"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="11" style="font-size: 1.5em; text-align: center;">装箱单</td>
+    </tr>
+    <tr class="no_border">
+      <th colspan="11" style="font-size: 1.3em; text-align: center;">PACKING LIST</th>
+    </tr>
+    <tr class="no_border">
+      <td colspan="7"></td>
+      <td colspan="4" class="text_left">装箱单编号：{$billHead.serial_no}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="7"></td>
+      <td colspan="4" class="text_left">发票编号：TD {$billHead.contract_no}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="1"></td>
+      <td colspan="6">集装箱号：{$billHead.box_no}</td>
+      <td colspan="4" class="text_left">日期：{$billHead->create_time}</td>
+    </tr>
+    <tr style="border-top: 1px solid #000;">
+      <td colspan="2">Marks&No.</td>
+      <td></td>
+      <td>Description</td>
+      <td colspan="2">Package</td>
+      <td colspan="2">G.W.</td>
+      <td colspan="2">N.W</td>
+      <td>CBM</td>
+    </tr>
+    {volist name="cargos" id="cargo" empty="暂时没有数据" }
+    <tr>
+      {empty name="cargo.name"}
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      {else}
+      <td>{$i == 1 ? 'N/M': ''}</td>
+      <td>{$list ++}</td>
+      <td>{$cargo.name}</td>
+      <td></td>
+      <td style="text-align: right;">{$cargo.case_no}</td>
+      <td style="text-align: left;">&nbsp;CTNS</td>
+      <td style="text-align: right;">{$cargo.rough_weight}</td>
+      <td style="text-align: left;">&nbsp;KGS</td>
+      <td style="text-align: right;">{$cargo.net_weight}</td>
+      <td style="text-align: left;">&nbsp;KGS</td>
+      <td></td>
+      {/empty}
+      {eq name="$i" value="1"}
+      {assign name="sum_case_no" value="$cargo.case_no" /}
+      {assign name="sum_rough_weight" value="$cargo.rough_weight" /}
+      {assign name="sum_net_weight" value="$cargo.net_weight" /}
+      {else}
+      {assign name="sum_case_no" value="$sum_case_no+$cargo.case_no" /}
+      {assign name="sum_rough_weight" value="$sum_rough_weight+$cargo.rough_weight" /}
+      {assign name="sum_net_weight" value="$sum_net_weight+$cargo.net_weight" /}
+      {/eq}
+    </tr>
+    {/volist}
+    <tr style="border-top: 1px solid #000;">
+      <td colspan="4" style="text-align: left">TOTAL</td>
+      <td style="text-align: right;">{$sum_case_no}</td>
+      <td style="text-align: left;">&nbsp;KGS</td>
+      <td style="text-align: right;">{$sum_rough_weight}</td>
+      <td style="text-align: left;">&nbsp;KGS</td>
+      <td style="text-align: right;">{$sum_net_weight}</td>
+      <td style="text-align: left;">&nbsp;KGS</td>
+      <td>
+          {if condition='$billHead->box_type == "L"'}
+          68CBM
+          {elseif condition='$billHead->box_type == "S"'/}
+          28CBM
+          {else /}
+          CBM
+          {/if}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  {/volist}
+</div>

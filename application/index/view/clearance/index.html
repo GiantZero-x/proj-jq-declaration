@@ -1,0 +1,235 @@
+
+
+<section class="panel panel-default">
+    <header class="panel-heading bg-blue lter">
+        <ul class="nav nav-tabs nav-justified">
+            <li class="active"><a href="#clearanceParam" data-toggle="tab">报关参数</a></li>
+            <li class=""><a href="#brokerSetting" data-toggle="tab">报关行设置</a></li>
+            <li class=""><a href="#operatingAgency" data-toggle="tab">经营单位设置</a></li>
+            <li class=""><a href="#forwardingUnit" data-toggle="tab">发货单位设置</a></li>
+            <li class=""><a href="#passportSetting" data-toggle="tab">护照设置</a></li>
+        </ul>
+    </header>
+    <div class="tab-content">
+        <div class="tab-pane active" id="clearanceParam">
+            <div class="panel-body">
+                <form role="form" action="{:url('index/clearance/save_customer_params')}">
+                    <div class="form-group col-sm-6">
+                        <label>装柜地址</label>
+                        <input type="hidden" name="id" value="{$cusParams.id}">
+                        <input type="text" class="form-control" placeholder="义乌港" name="stuffing_locat"  value="{$cusParams.stuffing_locat}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>包装</label>
+                        <select name="pack" class="form-control params_pack">
+                            <option value="">请选择</option>
+                            {volist name="dataDic.pack" id="vo"}
+                                <option value="{$vo.value}">{$vo.key}</option>
+                            {/volist}   
+                           
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>境内运输方式</label>
+                        <select name="inland_mode" class="form-control params_inland_mode">
+                            <option value="">请选择</option>
+                            {volist name="dataDic.inland_mode" id="vo"}
+                                <option value="{$vo.value}">{$vo.key}</option>
+                            {/volist}   
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>成交方式</label>
+                        <select name="terms_mode" class="form-control params_terms_mode">
+                            <option value="">请选择</option>
+                            {volist name="dataDic.terms_mode" id="vo"}
+                                <option value="{$vo.value}">{$vo.key}</option>
+                            {/volist} 
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>监管方式</label>
+                        <select name="supervise_mode" class="form-control params_supervise_mode">
+                            <option value="">请选择</option>
+                            {volist name="dataDic.supervise_mode" id="vo"}
+                                <option value="{$vo.value}">{$vo.key}</option>
+                            {/volist} 
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>默认商户号</label>
+                        <input type="text" class="form-control" name="def_merchant_code" 
+                               value="{$cusParams.def_merchant_code}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>境内货源地</label>
+                        <input type="text" class="form-control" name="inland_supply" 
+                               value="{$cusParams.inland_supply}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>征免性质</label>
+                        <input type="text" class="form-control" name="exemption_mode" 
+                               value="{$cusParams.exemption_mode}">
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <label>美元汇率</label>
+                        <input type="text" class="form-control" name="exchange_rate" 
+                               value="{$cusParams.exchange_rate}">
+                    </div>
+                </form>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-info save_btn" data-loading-text="正在保存..."
+                        data-type="#clearanceParam">保存
+                </button>
+            </div>
+        </div>
+        <div class="tab-pane" id="brokerSetting">
+            <div class="panel-body">
+                <form role="form" action="{:url('index/clearance/save_customs_broker')}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>报关行名称</label>
+                        <input type="text" class="form-control" placeholder="裕通报关行"
+                               value="{$customsBroker.name}" name="name">
+                        <input type="hidden" name="id" value="{$customsBroker.id}">
+                    </div>
+                    <div class="form-group">
+                        <label>社会信用代码</label>
+                        <input type="text" class="form-control" name="credit_code" 
+                               value="{$customsBroker.credit_code}">
+                    </div>
+                    <div class="form-group">
+                        <label>海关编码</label>
+                        <input type="text" class="form-control" name="customs_code" 
+                               value="{$customsBroker.customs_code}">
+                    </div>
+                    <div class="form-group">
+                        <label>报关三位代码</label>
+                        <input type="text" class="form-control" name="customs_three_code" 
+                               value="{$customsBroker.customs_three_code}">
+                    </div>
+                    <div class="form-group">
+                        <label>负责人</label>
+                        <input type="text" class="form-control" name="principal" 
+                               value="{$customsBroker.principal}">
+                    </div>
+                    <div class="form-group">
+                        <label>电话</label>
+                        <input type="text" class="form-control" name="telephone" 
+                               value="{$customsBroker.telephone}">
+                    </div>
+                    <div class="form-group">
+                        <label>组货单位</label>
+                        <input type="text" class="form-control" name="set_unit" 
+                               value="{$customsBroker.set_unit}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>报关行公章</label>                        
+                        <img id="LAY_demo_upload" width="50" height="50" {notempty name='customsBroker.office_seal'} src="{$customsBroker.office_seal}" {/notempty}>                        
+                        <input name="file" class="layui-upload-file" id='file1' lay-title="上传图片" type="file"> 
+                        <input type="hidden" name="office_seal" class="office_seal" value="{$customsBroker.office_seal}"/>
+                    </div>
+                    <div class="form-group">
+                        <label>报关员章</label>
+                        <img id="LAY_demo_upload_2" width="50" height="50" {notempty name='customsBroker.customs_seal'} src="{$customsBroker.customs_seal}"{/notempty} >
+                        <input name="file" class="layui-upload-file" id='file2' lay-title="上传图片" type="file"> 
+                        <input type="hidden" name="customs_seal" class="customs_seal" value="{$customsBroker.customs_seal}"/>
+                    </div>
+                    
+
+
+                    
+                </form>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-info save_btn" data-loading-text="正在保存..."
+                        data-type="#brokerSetting">保存
+                </button>
+            </div>
+        
+        </div>
+        <div class="tab-pane" id="operatingAgency">
+            <div data-table="jqgrid" data-url="{:url('index/clearance/get_Company')}?type=2"
+                 data-colName="编号,经营单位名称,社会信用代码,海关编码,负责人,电话" data-colModel="name,credit_code,customs_code,principal,telephone" >
+                <table></table>
+                <div></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="forwardingUnit">
+            <div data-table="jqgrid" data-url="{:url('index/clearance/get_Company')}?type=1"
+                 data-colName="编号,发货单位名称,社会信用代码,海关编码,负责人,电话,经营单位公章,经营单位公章路径,法人章,法人章路径" data-colModel="name,credit_code,customs_code,principal,telephone,office_seal,office_img,customs_seal,customs_img" data-editrules="required,required,required">
+                <table></table>
+                <div></div>
+            </div>
+        </div>
+        <div class="tab-pane" id="passportSetting">
+            <div data-url="{:url('index/clearance/get_passport')}"
+                 data-colName="编号,姓名,国籍,护照号,护照复印件,护照路径" data-colModel="name,nationality_str,passport_no,file_name,passport_img">
+                <table></table>
+                <div></div>
+            </div>
+        </div>
+    </div>
+</section>
+<link rel="stylesheet" href="<?=__STATIC__?>/js/layui/css/layui.css" type="text/css"/>
+<script src="<?=__STATIC__?>/js/clearance.js"></script>
+
+<script type="text/javascript">
+    $('.params_pack').val("{$cusParams.pack}");
+    $('.params_inland_mode').val("{$cusParams.inland_mode}");
+    $('.params_terms_mode').val("{$cusParams.terms_mode}");
+    $('.params_supervise_mode').val("{$cusParams.supervise_mode}");
+</script>
+<script src="<?=__STATIC__?>/js/layui/layui.js" charset="utf-8"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script>
+        layui.use('upload', function(){
+            layui.upload({
+              url: '{:url("index/upload/upload")}' //上传接口
+              ,success: function(res){ //上传成功后的回调
+                LAY_demo_upload.src=res;
+                $(".office_seal").attr("value",res);
+              }
+            });
+            
+            layui.upload({
+              url: '{:url("index/upload/upload")}'
+              ,elem: '#file2' //指定原始元素，默认直接查找class="layui-upload-file"
+              ,success: function(res){
+                LAY_demo_upload_2.src=res;
+                $(".customs_seal").attr("value",res);
+          //      LAY_demo_upload.src = res.url;
+              }
+            });
+            
+      });
+$("#LAY_demo_upload").click(function(){
+    previewImage($(this).attr("src"));
+});
+$("#LAY_demo_upload_2").click(function(){
+    previewImage($(this).attr("src"));
+});
+
+</script>
+<!-- <script type="text/javascript">
+    $('.pagination').find('a').click(function(event){
+        // event.preventDefault();
+        // $(this).closest('.pagination').children('li').removeClass("active");
+        // $(this).closest('li').addClass("active");
+        var href = $(this).attr('href');
+        var tabId= $('.dker').find('.active').find('a').attr('href');
+        var href = href + '&tab=passportSetting';
+        
+        $(this).attr('href', href);
+        // var page = href.substring(href.indexOf('=') + 1);
+        // var id = $('.dker').find('.active').find('a').attr('href');
+    })
+</script>
+
+<script type="text/javascript">
+    var tabId = '{$tab}';
+    if (tabId) {
+        $('.dker').find('a').eq(4).trigger("click");
+    }
+</script> -->

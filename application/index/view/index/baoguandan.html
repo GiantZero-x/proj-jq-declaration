@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="<?=HTTP_HOST?>__STATIC__/css/bootstrap.css" type="text/css"/>
+<!-- 自定义 -->
+<link rel="stylesheet" href="<?=HTTP_HOST?>__STATIC__/less/app.css" type="text/css"/>
+{include file='index/style' /}
+<style>
+  #baoguandan {
+    font-family: SimSun;
+  }
+  #baoguandan p, #baoguandan h2 {
+    color: #000;
+    margin-bottom: 4px;
+  }
+
+  .p_indent {
+    padding-left: 70px;
+  }
+
+  .p_indent_r {
+    padding-left: 70px;
+  }
+
+  .p_indent_r span {
+    width: 60px;
+  }
+
+  p > span {
+    display: inline-block;
+    width: 100px;
+  }
+
+  #baoguandan td {
+    height: 34px;
+    line-height: 34px;
+  }
+</style>
+<div class="tab-pane active" id="baoguandan">
+  {assign name="list" value="1" /}
+  {volist name="$billHead->declaration" id="cargos" empty="暂时没有数据" }
+  <p class="pull-left" style="width: 16%;">出口口岸：</p>
+  <h2 class="pull-left" style="width: 25%;">{$billHead->export_port_str}</h2>
+  <p class="pull-left" style="width: 27%;height: 3em;">编号：<b class="h4">{$billHead->serial_no}</b></p>
+  <p class="pull-left text_left" style="width: 32%;">白卡号：<b class="h4">{$billHead->white_card_no}</b></p>
+  <p class="pull-left text_left" style="width: 32%;">车牌号：<b class="h4">{$billHead->car_no}</b></p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 63%;"><span>客户：</span>{$billHead->customer}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 36%;"><span>截关：</span>{$billHead->closing}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 33%;"><span>国家：</span>{$billHead->country->country_na}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 30%;"><span>目的港：</span>{$billHead->unloading_port_str}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 36%;"><span>日期：</span>{$billHead->create_time}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 63%;"><span>提单号：</span>{$billHead->bill_no}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 33%;"><span>备注：</span>{$billHead->head_remark}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 63%;"><span>船名航次：</span>{$billHead->ship_name}{$billHead->voyage_no}
+  </p>
+  <p class="pull-left text_left p_indent_r" style="width: 33%;"><span>柜型：</span>{$billHead->box_type}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 40%;"><span>箱号：</span>{$billHead->box_no}</p>
+  <p class="pull-left text_left p_indent" style="width: 60%;"><span>放行号：</span>{$billHead->allclear_no}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent" style="width: 63%;">
+    <span>经营单位抬头：</span>{$billHead->deliver->name} {$billHead->deliver->customs_code}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 33%;"><span>体积：</span>{$billHead->sum_cargos->bulk}</p>
+  <p class="clearfix"></p>
+  <p class="pull-left text_left p_indent_r" style="width: 33%;"><span>件数：</span>{$billHead->sum_cargos->case_no}</p>
+  <p class="pull-left text_left p_indent_r" style="width: 30%;"><span>毛重：</span>{$billHead->sum_cargos->rough_weight}
+  </p>
+  <p class="pull-left text_left p_indent_r" style="width: 36%;"><span>净重：</span>{$billHead->sum_cargos->net_weight}</p>
+  <table>
+    <tbody>
+    <tr>
+      <td width="3%"></td>
+      <td width="12%">商品编码</td>
+      <td width="20%">品名</td>
+      <td width="8%">件数</td>
+      <td width="8%">净重</td>
+      <td width="8%">数量</td>
+      <td width="8%">单位</td>
+      <td width="10%">单价</td>
+      <td width="10%">总价</td>
+      <td>数重比</td>
+    </tr>
+    {volist name="cargos" id="cargo" empty="暂时没有数据" }
+    <tr>
+      <td>{$list ++}</td>
+      {empty name="cargo.name"}
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      {else}
+      <td>{$cargo.hs_code}</td>
+      <td>{$cargo.name}</td>
+      <td>{$cargo.case_no}</td>
+      <td>{$cargo.net_weight}</td>
+      <td>{$cargo.unit1}</td>
+      <td>{$cargo.unit}</td>
+      <td>{$billHead.currency_symbol}{$cargo.price}</td>
+      <td>{$billHead.currency_symbol}{$cargo.amount}</td>
+      <td>{$cargo.number_weight_ratio}</td>
+      {/empty}
+      {eq name="$i" value="1"}
+      {assign name="sum_net_weight" value="$cargo.net_weight" /}
+      {assign name="sum_amount" value="$cargo.amount" /}
+      {else}
+      {assign name="sum_net_weight" value="$sum_net_weight+$cargo.net_weight" /}
+      {assign name="sum_amount" value="$sum_amount+$cargo.amount" /}
+      {/eq}
+    </tr>
+    {/volist}
+    <tr class="no_border">
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>{$sum_net_weight}</td>
+      <td></td>
+      <td></td>
+      <td>总和</td>
+      <td>{$billHead.currency_symbol}{$sum_amount}</td>
+      <td></td>
+    </tr>
+    </tbody>
+  </table>
+  {/volist}
+</div>

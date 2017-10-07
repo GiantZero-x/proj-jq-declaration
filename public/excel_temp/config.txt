@@ -1,0 +1,15 @@
+usercode=ZUozH0D6Fc1XJGNI2iEi
+UPshnames=数据输入|录入|报关单|发票|装箱单|合同|港航|委托书|简化清单|简化归类货物清单|联网清单|采购清单
+UPpath=E:\当日单子
+QDshnames=简化清单
+QDpath=E:\当日单子\清单
+Lshnames=报关单
+Lpath=E:\当日单子\回发
+
+Custlist=北仑海关|梅山港区|洋山港区|外港海关|舟关金塘
+Portlist=北二集司|北仑山码头|NBCT|港吉|世航五洲|远东|招商国际
+Portlist=梅山国际
+Portlist=
+Portlist=
+Portlist=甬舟码头
+

@@ -1,0 +1,143 @@
+<!-- 统计数据 -->
+<section class="panel panel-default">
+    <div class="row m-l-none m-r-none bg-light lter">
+        <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                                <span class="fa-stack fa-2x pull-left m-r-sm">
+                                  <i class="fa fa-circle fa-stack-2x text-info"></i>
+                                  <i class="fa fa-male fa-stack-1x text-white"></i>
+                                </span>
+            <a class="clear" href="{:url('index/index/index')}?status=1">
+                <span class="h4 block m-t-xs">待审核<span class="h3 font-bold">{$overview.check}</span></span>
+                <small class="text-muted text-uc">
+                    <a href="{:url('index/index/index')}?status=2">
+                        <span class="h4 text-danger">{$overview.checked}</span>已审核
+                    </a>
+                </small>
+            </a>
+        </div>
+        <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x text-warning"></i>
+                      <i class="fa fa-bug fa-stack-1x text-white"></i>
+                    </span>
+            <a class="clear" href="{:url('index/index/index')}?status=3">
+                <span class="h4 block m-t-xs">已申报 <span class="h3 font-bold">{$overview.success}</span></span>
+                <small class="text-muted text-uc">提示文字</small>
+            </a>
+        </div>
+        <div class="col-sm-6 col-md-3 padder-v b-r b-light">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x text-blue"></i>
+                      <i class="fa fa-fire-extinguisher fa-stack-1x text-white"></i>
+                    </span>
+            <a class="clear" href="{:url('index/index/index')}?status=0">
+                <span class="h4 block m-t-xs">草稿 <span id="firers" class="h3 font-bold">{$overview.save}</span></span>
+                <small class="text-muted text-uc">提示文字</small>
+            </a>
+        </div>
+        <div class="col-sm-6 col-md-3 padder-v b-r b-light lt">
+                    <span class="fa-stack fa-2x pull-left m-r-sm">
+                      <i class="fa fa-circle fa-stack-2x icon-muted"></i>
+                      <i class="fa fa-clock-o fa-stack-1x text-white"></i>
+                    </span>
+            <a class="clear" href="{:url('index/index/index')}?status=4">
+                <span class="h4 block m-t-xs">退回 <span class="h3 font-bold">{$overview.back}</span></span>
+                <small class="text-muted text-uc">提示文字</small>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- 数据展示 -->
+<section class="panel panel-default">
+    <!-- 表头 -->
+    <div class="panel-heading">
+        <strong class="panel-title text-blue"><p id="now" style="display:inherit;"></p>
+            <a href="{:url('index/index/index')}" class="pull-right text-sm">显示全部</a>
+            </strong>
+    </div>
+    
+    <!-- 功能 -->
+    <div class="row wrapper">
+        <div class="col-sm-8 m-b-xs">
+             <a href="{:url('index/newClearance/index')}" class="btn btn-sm  btn-warning">新建报关单</a>
+            <!--<button class="btn btn-sm btn-info">批量导出</button>-->
+        </div>
+    </div>
+    
+    <!-- 标签 -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="show_all">
+            <div class="table-responsive">
+                <table class="table table-striped b-t b-light">
+                    <thead>
+                    <tr>
+                        <th width="20"><input type="checkbox"></th>
+                        <th>单号</th>
+                        <th>客户</th>
+                        <th>报关起始地</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th width="150">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   {foreach $list as $v}
+                    <tr style="text-align: left;">
+                        <td><input type="checkbox" value="{$v.id}"></td>
+                        <td>{$v.serial_no}</td>
+                        <td>{$v.customer}</td>
+                        <td>{$v.export_portStr}-->{$v.unloading_portStr}</td>
+                        <td>{$v.create_time}</td>
+                        <td>{$v.StatusStr}</td>
+                        <td style="text-align: left;">
+                        {if $v.status neq 0}
+                          <span class="btn btn-link no-padder action_detail btn-icon btn-warning" title="详情"><i class="fa fa-align-right"></i></span>
+                        {/if}
+                          {if $v.status eq 0 || $v.status eq 4}
+                        <span class="btn btn-link no-padder action_edit btn-icon btn-info" title="编辑"
+                            data-url="{:url('index/new_clearance/get_by_id')}">
+                            <i class="fa fa-edit"></i>
+                        </span>
+                          {/if} 
+                       {if $v.status eq 1}
+                        <span class="btn btn-link no-padder action_edit btn-icon btn-info" title="审核"
+                            data-url="{:url('index/index/check')}">
+                            <i class="fa fa-minus-square"></i>
+                        </span>
+                       {/if}
+                          {if $v.status eq 0}
+                            <span class="btn btn-link no-padder action_delete btn-icon btn-default " 
+                            data-url="{:url('index/new_clearance/delete_custom')}" title="删除"><i class="fa fa-trash-o"></i></span>
+                          {/if}
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                {$list->render()}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="<?=__STATIC__?>/js/index.js"></script>
+
+<script type="text/javascript">
+    var status = '{$Request.get.status}';
+    if (status == ''){
+        status = 5;
+    }
+    var statusArr = ['草稿', '待审核',  '已申报', '已申报', '退回', '全部报关单'];
+    $('#now').html(statusArr[status]);
+
+
+    $('.pagination a').click(function (event) {
+        if (status != 5) {
+            event.preventDefault();
+            location.href = this.href + '&status=' + status;
+        }
+        
+        //$('#search-form').attr('action', this.href).submit();
+    });
+</script>

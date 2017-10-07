@@ -1,0 +1,67 @@
+{include file='index/style' /}
+<style>
+    #jianhuaqingdan {
+        font-family: SimSun;
+    }
+    #jianhuaqingdan td,
+    #jianhuaqingdan th{
+        height: 30px;
+        line-height: 30px;
+    }
+</style>
+<div class="tab-pane" id="jianhuaqingdan">
+    {volist name="billHead->simple_list" id="cargos" empty="暂时没有数据" }
+    <h5 style="text-align: center;color: #000;font-weight: bold;">小商品货物清单</h5>
+    <table>
+        <tbody>
+        <tr>
+            <th width="15%">集装箱号</th>
+            <th width="15%">提单号</th>
+            <td width="23%"></td>
+            <td width="10%"></td>
+            <td width="10%"></td>
+            <td width="12%"></td>
+            <td width="15%"></td>
+        </tr>
+        <tr>
+            <td>{$billHead.box_no}</td>
+            <td>{$billHead.bill_no}</td>
+            <td colspan="2"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr >
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>货号/唛头</th>
+            <th>商品品名</th>
+            <th>规格型号</th>
+            <th>数量</th>
+            <th>单位</th>
+            <th>重量(KG)</th>
+            <th>货值</th>
+        </tr>
+        
+            {volist name="cargos" id="cargo"}
+            <tr>
+                <td>{$cargo.hs_code}</td>
+                <td style="text-align: left;">{$cargo.name}</td>
+                <td style="text-align: left;">{$cargo.name?=$cargo.code.standard}</td>
+                <td style="font-weight: bold;">{$cargo.number}</td>
+                <td>{$cargo.unit}</td>
+                <td style="font-weight: bold;">{$cargo.net_weight}</td>
+                <td>{$cargo.name?=$cargo.amount}</td>
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+    {/volist}
+</div>

@@ -1,0 +1,67 @@
+{include file='index/style' /}
+<style>
+    #ganghang {
+        font-family: SimSun;
+    }
+</style>
+<div class="tab-pane" id="ganghang">
+    <table>
+        <tbody>
+        <tr class="no_border">
+            <th colspan="2" class="text_center" style="font-size: 2em;">委托报关补充协议书</th>
+        </tr>
+        <tr class="no_border">
+            <th colspan="2"></th>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left">浙江裕通报关代理有限公司 ：（填写报关企业名称）</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本公司郑重承诺：此票由本公司代理出口的货物已如实向报关企业提供详细清单，货物中无夹藏易燃易爆危险品、涉恐、涉毒、反动淫秽、文物、侵犯知识产权、钢材、粮食等各类国家禁止、限制出口的货物和物品。</td>
+        <tr class="no_border">
+            <th colspan="2" class="text_left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本批货物装箱情况：</th>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left">船名/航次：{$billHead.ship_name} / {$billHead.voyage_no}</td>
+        </tr>
+        <tr class="no_border">
+            <td class="text_left">提单号：{$billHead->bill_no}</td>
+            <td>件数： {$billHead->sum_cargos->case_no}  CTNS 重量： {$billHead->sum_cargos->rough_weight} KGS</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left">集装箱号：{$billHead->box_no}</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left"><input type="checkbox"> 来自本公司自营仓库</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left">仓库地址： 装柜地址 缺少义乌港A区3楼388</td>
+        </tr>
+        <tr class="no_border">
+            <td class="text_left">仓库负责人姓名：虞</td>
+            <td class="text_left">联系电话：18757868508</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left"><input type="checkbox"> 来自非本公司自营仓库</td>
+        </tr>
+        <tr class="no_border">
+            <td class="text_left">●生产厂家地址：</td>
+            <td class="text_left">护照号码/身份证号：</td>
+        </tr>
+        <tr class="no_border">
+            <td class="text_left">●货主姓名：</td>
+            <td class="text_left">（以上两类信息选填一类）</td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2"></td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="2" class="text_left"><input type="checkbox"> 厂家退税货物</td>
+        </tr>
+        <tr class="no_border">
+            <td class="text_left">●生产厂家地址：</td>
+            <td class="text_left"><img src="<?=HTTP_HOST?>__STATIC__/images/ganghang1.jpg" alt="货代公司章"><br/>加盖货代公司章<br/>{$billHead->create_time}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

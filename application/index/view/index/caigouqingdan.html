@@ -1,0 +1,161 @@
+{include file='index/style' /}
+<style>
+    #caigouqingdan {
+        font-family: SimSun;
+    }
+    #caigouqingdan td{
+        white-space: nowrap;
+        height:30px;
+        line-height:30px;
+    }
+</style>
+<div class="tab-pane" id="caigouqingdan">
+{volist name="billHead->markets" id="market" empty="暂时没有数据" }
+    <table>
+        <tbody>
+        <tr class="no_border">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td class="red_dot">市场采购号</td>
+            <td class="b_b" colspan="2" style="text-align: center">{$market[0]->market_no?:$customerparams.def_merchant_code}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="no_border">
+            <td colspan="8"><h2 style="text-align: center;">市场采购贸易交易单</h2></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>NO:</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td class="red_dot">供货商：</td>
+            <td colspan="2" class="b_b">国际商贸城</td>
+            <td></td>
+            <td class="red_dot">采购商：</td>
+            <td colspan="2" class="b_b">Sattar</td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td>供货商电话：</td>
+            <td colspan="2" class="b_b"></td>
+            <td></td>
+            <td>采购商电话：</td>
+            <td colspan="2" class="b_b"></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td>供货商地址：</td>
+            <td colspan="2" class="b_b"></td>
+            <td></td>
+            <td>采购商地址：</td>
+            <td colspan="2" class="b_b"></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td>下单日期：</td>
+            <td colspan="2" class="b_b">{$billHead->create_time_chs}</td>
+            <td></td>
+            <td>交货地址：</td>
+            <td colspan="2" class="b_b">{$customerparams.stuffing_locat}</td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td>交货仓库：</td>
+            <td colspan="2" class="b_b"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td width="15%" colspan="2">货号</td>
+            <td width="25%" class="red_dot">货物品名</td>
+            <td width="10%" class="red_dot">箱数</td>
+            <td width="12%">每箱数量</td>
+            <td width="14%" class="red_dot">总数量</td>
+            <td width="12%" class="red_dot">单价</td>
+            <td class="red_dot">金额</td>
+        </tr>
+        {volist name="market" id="cargo" empty="暂时没有数据"}
+            <tr>
+                <td colspan="2"></td>
+                {empty name="$cargo.name"}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {else}
+                    <td>{$cargo.name}</td>
+                    <td>{$cargo.case_no}</td>
+                    <td>{$cargo.per_qty ?= $cargo.per_qty}</td>
+                    <td>{$cargo.number}{$cargo.unit}</td>
+                    <td>{neq name="$cargo.np" value="0"}
+                        {$cargo.np * $customerparams.exchange_rate|round=2}
+                    {/neq}</td>
+                    <td>{notempty name="$cargo.amount"}
+                        {$cargo.np * $cargo.number * $customerparams.exchange_rate|round=2}
+                    {/notempty}</td>
+                {/empty}
+               
+            </tr>
+        {/volist}
+        <tr>
+            <td colspan="2" class="red_dot">总金额：</td>
+            <td colspan="2"></td>
+            <td rowspan="3" class="n_r" style="vertical-align: top">备注：</td>
+            <td colspan="3" rowspan="3" class="n_l"></td>
+        </tr>
+        <tr>
+            <td class="red_dot n_r" colspan="2">供货方签名：</td>
+            <td colspan="2" class="n_l"></td>
+        </tr>
+        <tr>
+            <td class="red_dot n_r" colspan="2">采购方签名：</td>
+            <td colspan="2" class="n_l"></td>
+        </tr>
+        <tr class="no_border">
+            <td></td>
+            <td colspan="7" align="left">重要提示：
+                <ol>
+                    <li>本单据一式三联，采购商.供货商.代理商各留一联。</li>
+                    <li>本单据为市场采购出口必备单证，无此单据的不得以市场采购贸易方式出口。</li>
+                    <li>打”*“号信息项为必须填写内容。</li>
+                    <li>货物品名规格须填写中文商品名称。</li>
+                </ol>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{/volist}
+
+</div>

@@ -1,0 +1,12 @@
+<div class="wrapper scroll-x">
+    <div data-table="jqgrid" data-url="{:url('index/params_manage/get_data')}"
+         data-colName="编号,HSCODE,品名,单位,单位2,规格,单价,数重比,增值税率,退税率,商检否,涉税否,商户号,备注"
+         data-colModel="hs_code,name,unit,unit2,standard,price,ratio,vat_rate,rebate_rate,involve_customs,involve_tax,market_no,remark"
+         data-colLength="100,150,60,60,300,70,60,60,60,60,60"
+         data-editrules="required|custom,required,,,required,required|number,required|number,number,number,,,number"
+         data-customfunc="validateHsCode"
+    >
+      <table></table>
+      <div></div>
+    </div>
+</div>

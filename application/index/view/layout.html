@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" class="app">
+<!-- head-->
+<head>
+    {include file="public/head" /}
+    <!-- js文件 -->
+    {include file="public/script" /}
+    <script>
+        var STATIC = '__STATIC__';
+        var HTTP_HOST = '<?=HTTP_HOST?>';
+    </script>
+</head>
+<body>
+<section class="vbox">
+    <!--　头部　-->
+    {include file="public/header" /}
+    <!-- 主体 -->
+    <section>
+        <section class="hbox stretch">
+            <!-- 导航 -->
+            {include file="public/nav" /}
+            <!-- 内容 -->
+            <section>
+                <section class="vbox">
+                    <section class="scrollable padder">
+                        <!--　导航　-->
+                        <ul class="breadcrumb no-border no-radius b-b b-light pull-in"></ul>
+                        {__CONTENT__}
+                    </section>
+                </section>
+            </section>
+        </section>
+    </section>
+</section>
+</body>
+</html>

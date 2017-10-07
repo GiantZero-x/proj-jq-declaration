@@ -1,0 +1,117 @@
+{include file='index/style' /}
+<style>
+
+  #fapiao {
+    font-family: SimSun;
+  }
+
+  #fapiao td {
+    border: none;
+  }
+  #fapiao tr:not(.no_border) td {
+    height: 31px;
+    line-height: 31px;
+  }
+</style>
+<div class="tab-pane" id="fapiao">
+  {assign name="list" value="1"}
+  {volist name="$billHead->invoice" id="cargos" empty="暂时没有数据" }
+  <table>
+    <tbody>
+    <tr class="no_border">
+      <td colspan="10" style="font-size: 2em; text-align: center;">{$billHead.deliver->name}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10" style="font-size: 1.5em; text-align: center;">商业发票</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10" style="font-size: 1.5em; text-align: center; font-weight: bold;">COMMERCIAL INVOICE</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="7"></td>
+      <td colspan="3">发票编号：TD&nbsp;{$billHead.contract_no}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10"></td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="7"></td>
+      <td colspan="2" style="text-align: right;">日期：{$billHead->create_time}</td>
+      <td></td>
+    </tr>
+    <tr class="no_border" style="border-top: 1px solid #000;">
+      <td colspan="5" style="text-align: left">装箱口岸</td>
+      <td colspan="5" style="text-align: left">目的地</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="2" style="text-align: left">Form</td>
+      <td colspan="3" style="text-align: center">{$billHead->export_port_str}</td>
+      <td style="text-align: left">To</td>
+      <td style="text-align: center">{$billHead->country->country_na}</td>
+      <td colspan="3" style="text-align: center">{$billHead->unloading_port_str}</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10" style="text-align: left">信用证号数</td>
+    </tr>
+    <tr class="no_border">
+      <td colspan="10" style="text-align: left">Letter of Credit No</td>
+    </tr>
+    <tr style="border-top: 1px solid #000;">
+      <td colspan="2">Marks&No.</td>
+      <td></td>
+      <td>GOODS</td>
+      <td colspan="3">QUANTITY</td>
+      <td>UNIT</td>
+      <td>PRICE</td>
+      <td>AMOUNT</td>
+    </tr>
+    <tr>
+      <td colspan="8"></td>
+      <td>FOB NINGBO</td>
+      <td></td>
+    </tr>
+    {volist name="cargos" id="cargo" empty="暂时没有数据" }
+    <tr>
+      {empty name="cargo.name"}
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      {else}
+      <td>{$i == 1 ? 'N/M': ''}</td>
+      <td>{$list ++ }</td>
+      <td>{$cargo.name}</td>
+      <td></td>
+      <td colspan="3" style="text-align: right;">{$cargo.unit1}</td>
+      <td style="text-align: left;">{$cargo.unit}</td>
+      <td>{$billHead.currency_symbol}{$cargo.price}</td>
+      <td>{$billHead.currency_symbol}{$cargo.amount}</td>
+      {/empty}
+      {eq name="$i" value="1"}
+      {assign name="sum_amount" value="$cargo.amount" /}
+      {else}
+      {assign name="sum_amount" value="$sum_amount+$cargo.amount" /}
+      {/eq}
+    </tr>
+    {/volist}
+
+    <tr style="border-top: 1px solid #000">
+      <td colspan="2">TOTAL</td>
+      <td></td>
+      <td></td>
+      <td colspan="3"></td>
+      <td></td>
+      <td></td>
+      <td>{$billHead.currency_symbol}{$sum_amount}</td>
+    </tr>
+    </tbody>
+  </table>
+  {/volist}
+</div>
